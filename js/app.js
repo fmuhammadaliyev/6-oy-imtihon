@@ -1,3 +1,11 @@
+import { getAll } from "./request.js";
+
+getAll()
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((error) => console.log(error.message));
+
 const elBtn = document.getElementById("btn");
 const html = document.documentElement;
 const alertBox = document.getElementById("alertBox");
