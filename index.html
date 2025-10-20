@@ -8,27 +8,134 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <div class="relative flex items-center justify-between w-full px-4 mt-4">
-      <button
-        id="btn"
-        class="btn btn-soft btn-circle text-xl w-12 h-12 flex items-center justify-center"
-      >
-        🌙
-      </button>
-
-      <h1 class="text-xl font-semibold absolute left-1/2 -translate-x-1/2">
-        Cars loyihasi
-      </h1>
-
-      <div class="w-12 h-12"></div>
-    </div>
-
-    <!-- alert xabari -->
+    <!-- internet uchun  -->
     <div
-      id="alertBox"
-      class="hidden fixed top-4 right-4 alert shadow-lg w-64 transition-all duration-300 max-[400px]:hidden"
-    ></div>
+      id="offlinePage"
+      class="fixed inset-0 hidden flex items-center justify-center bg-black/50 z-50"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center"
+      >
+        <div class="flex justify-center mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-10 w-10 text-red-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h2 class="text-lg font-semibold text-gray-800 mb-2">
+          Internet uzildi
+        </h2>
+        <p class="text-sm text-gray-600">
+          Qayta bog'lanish uchun internet tarmog'iga ulaning 🌐
+        </p>
+      </div>
+    </div>
+    <!-- mayda chuda  -->
+    <div>
+      <!-- dark  -->
+      <div class="relative flex items-center justify-between w-full px-4 mt-4">
+        <button
+          id="btn"
+          class="btn btn-soft btn-circle text-xl w-12 h-12 flex items-center justify-center animate-[pulse_2s_ease-in-out_infinite,spin_8s_linear_infinite] text-yellow-500 dark:text-yellow-300 transition-all duration-300"
+        >
+          🌙
+        </button>
 
+        <h1
+          class="text-xl font-semibold absolute left-1/2 -translate-x-1/2 animate-pulse max-[400px]:text-[16px]"
+        >
+          Cars loyihasiga
+        </h1>
+      </div>
+      <!-- oyna  -->
+      <h1
+        class="text-xl animate-pulse font-semibold absolute left-1/2 -translate-x-1/2 pt-2 max-[400px]:text-[16px]"
+      >
+        Xush kelibsiz 😊
+      </h1>
+      <!-- soat  -->
+      <div
+        id="clock"
+        class="fixed top-4 right-4 text-4xl font-mono font-semibold tracking-widest text-base-content transition-all duration-300 max-[700px]:text-2xl max-[500px]:text-[12px] animate-pulse"
+      >
+        00:00:00
+      </div>
+
+      <!-- alert xabari -->
+      <div
+        id="alertBox"
+        class="hidden fixed top-4 right-4 alert shadow-lg w-64 transition-all duration-300 max-[500px]:hidden"
+      ></div>
+    </div>
+    <!-- section  search -->
+    <section class="py-10 mt-5 font-semibold">
+      <div class="container mx-auto px-5">
+        <div class="flex flex-wrap items-center gap-5 pb-5">
+          <select
+            class="select border rounded-md px-3 py-2"
+            id="filterTypeSelect"
+          >
+            <option disabled selected>Nimasi bo‘yicha filter qilamiz?</option>
+            <option value="colorName">Rang</option>
+            <option value="category">Turkum</option>
+            <option value="year">Yil</option>
+            <option value="country">Davlat</option>
+            <option value="maxSpeed">Tezlik</option>
+          </select>
+
+          <select
+            class="select border rounded-md px-3 py-2 hidden"
+            id="filterValueSelect"
+          >
+            <option disabled selected>All</option>
+          </select>
+
+          <label class="input">
+            <svg
+              class="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input
+              type="search"
+              class="grow"
+              placeholder="Search"
+              id="searchInput"
+            />
+            <kbd class="kbd kbd-sm">⌘</kbd>
+            <kbd class="kbd kbd-sm">K</kbd>
+          </label>
+        </div>
+
+        <div
+          id="container"
+          class="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        ></div>
+      </div>
+    </section>
+    <!-- suzuvchilar  -->
+    <canvas id="canvas"></canvas>
     <script type="module" src="./js/app.js"></script>
   </body>
 </html>

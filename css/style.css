@@ -19,8 +19,15 @@
   background-color: #000000 !important;
   color: #ffffff !important;
 }
-@media (max-width: 400px) {
+@media (max-width: 700px) {
   #alertBox {
     display: none !important;
   }
+}
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: "Courier New", monospace;
+}
+canvas {
 }
