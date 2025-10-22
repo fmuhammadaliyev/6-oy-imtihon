@@ -1,26 +1,25 @@
 const baseURL = "https://json-api.uz/api/project/fn44";
-// gett all
-export async function getAll() {
+
+export async function getAll(query = "") {
   try {
-    const req = await fetch(baseURL + "/cars");
+    const req = await fetch(baseURL + `/cars${query ? query : ""}`);
     const res = await req.json();
     return res;
   } catch {
-    throw new Error("Ma'lumotlarni olishda xatolik bo'ldi!");
+    throw new Error("Ma'lumotlarni olishda xatolik bo'ldi");
   }
 }
 
-// by id
 export async function getById(id) {
   try {
     const req = await fetch(baseURL + `/cars/${id}`);
     const res = await req.json();
     return res;
   } catch {
-    throw new Error("Ma'lumotni olishda xatolik bo'ldi!");
+    throw new Error("Ma'lumotni olishda xatolik bo'ldi");
   }
 }
-// qoshish
+
 export async function addElement(newData) {
   try {
     const token = localStorage.getItem("token");
@@ -35,16 +34,15 @@ export async function addElement(newData) {
     const res = await req.json();
     return res;
   } catch {
-    throw new Error("Ma'lumotni qo'shishda xatolik bo'ldi!");
+    throw new Error("Ma'lumotni qo'shishda xatolik bo'ldi");
   }
 }
-// tahrirlash
-export async function editElement(editedData) {
+
+export async function editedElement(editedData) {
   try {
     const token = localStorage.getItem("token");
     const req = await fetch(baseURL + `/cars/${editedData.id}`, {
       method: "PATCH",
-
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -54,10 +52,10 @@ export async function editElement(editedData) {
     const res = await req.json();
     return res;
   } catch {
-    throw new Error("Ma'lumotni tahrirlashda xatolik bo'ldi!");
+    throw new Error("Ma'lumotni tahrirlashda xatolik bo'ldi");
   }
 }
-// delete
+
 export async function deleteElement(id) {
   try {
     const token = localStorage.getItem("token");
@@ -69,6 +67,6 @@ export async function deleteElement(id) {
     });
     return id;
   } catch {
-    throw new Error("Ma'lumotni olishda xatolik bo'ldi!");
+    throw new Error("Ma'lumotni o'chirishda xatolik bo'ldi");
   }
 }
