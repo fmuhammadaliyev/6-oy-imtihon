@@ -336,6 +336,107 @@
         </div>
       </div>
     </dialog>
+    <!-- ✏️ Edit Modal -->
+    <dialog id="editModal" class="modal">
+      <div class="modal-box max-w-xl">
+        <h3 class="text-lg font-bold text-center mb-2" id="editedElementTitle">
+          Ma'lumot tahrirlash
+        </h3>
+        <p class="py-2 text-center text-gray-600 dark:text-gray-300">
+          Quyidagi maydonlarni o‘zgartirib, “Tasdiqlash” tugmasini bosing.
+        </p>
+
+        <form id="editForm" class="flex flex-col gap-3 mt-3">
+          <!-- Mashina nomi -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Mashina nomi</label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Masalan: Malibu 2"
+              class="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <!-- Tavsif -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Tavsif</label>
+            <textarea
+              class="textarea textarea-bordered w-full"
+              name="description"
+              placeholder="Masalan: Tejamkor va qulay avtomobil"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Rang -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Rang</label>
+            <input
+              type="text"
+              name="color"
+              placeholder="Masalan: Qora"
+              class="input input-bordered w-full"
+            />
+          </div>
+
+          <!-- Yil -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Yil</label>
+            <input
+              type="number"
+              name="year"
+              placeholder="Masalan: 2024"
+              class="input input-bordered w-full"
+              min="1990"
+              max="2099"
+            />
+          </div>
+
+          <!-- Davlat -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Davlat</label>
+            <input
+              type="text"
+              name="country"
+              placeholder="Masalan: AQSH"
+              class="input input-bordered w-full"
+            />
+          </div>
+
+          <!-- Turkum -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Turkum</label>
+            <input
+              type="text"
+              name="category"
+              placeholder="Masalan: Sedan"
+              class="input input-bordered w-full"
+            />
+          </div>
+
+          <!-- Tezlik -->
+          <div>
+            <label class="block text-sm font-semibold mb-1">Tezlik</label>
+            <input
+              type="text"
+              name="speed"
+              placeholder="Masalan: 220 km/h"
+              class="input input-bordered w-full"
+            />
+          </div>
+
+          <!-- Tugmalar -->
+          <div class="flex justify-end gap-3 mt-4">
+            <button type="submit" class="btn btn-primary">Tasdiqlash</button>
+            <form method="dialog">
+              <button class="btn btn-outline">Bekor qilish</button>
+            </form>
+          </div>
+        </form>
+      </div>
+    </dialog>
 
     <script type="module" src="./js/app.js"></script>
   </body>

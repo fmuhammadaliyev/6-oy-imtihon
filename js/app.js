@@ -168,42 +168,43 @@ elContainer.addEventListener("click", async (evt) => {
 
   // ✏️ Edit
   if (target.classList.contains("js-edit")) {
-    if (checkAuth()) {
-      customConfirm("Rostdan tahrirlamoqchimisiz?", () => {
-        editedElementId = target.id;
-        elEditModal.showModal();
-
-        const foundElement = localData.find(
-          (element) => element.id == target.id
-        );
-
-        if (!foundElement) {
-          customAlert("Xatolik", "Ma'lumot topilmadi!");
-          return;
-        }
-
-        // 🔄 Barcha inputlarni to‘ldirish
-        elEditForm.name.value = foundElement.name || "";
-        elEditForm.description.value = foundElement.description || "";
-        elEditForm.color.value = foundElement.color || "";
-        elEditForm.year.value = foundElement.year || "";
-        elEditForm.country.value = foundElement.country || "";
-        elEditForm.category.value = foundElement.category || "";
-        elEditForm.speed.value = foundElement.speed || "";
-
-        elEditedElementTitle.innerText = foundElement.name;
+    if (!checkAuth()) {
+      customConfirm("Kirish talab qilinadi! Ro'yxatdan o'tasizmi?", () => {
+        window.location.href = "/pages/login.html";
       });
-    } else {
-      customAlert("Kirish talab qilinadi", "Ro'yxatdan o'tishingiz kerak!");
-      window.location.href = "/pages/login.html";
+      return;
     }
+
+    customConfirm("Rostdan tahrirlamoqchimisiz?", () => {
+      editedElementId = target.id;
+      elEditModal.showModal();
+
+      const foundElement = localData.find((element) => element.id == target.id);
+
+      if (!foundElement) {
+        customAlert("Xatolik", "Ma'lumot topilmadi!");
+        return;
+      }
+
+      // 🔄 Formani to‘ldirish
+      elEditForm.name.value = foundElement.name || "";
+      elEditForm.description.value = foundElement.description || "";
+      elEditForm.color.value = foundElement.color || "";
+      elEditForm.year.value = foundElement.year || "";
+      elEditForm.country.value = foundElement.country || "";
+      elEditForm.category.value = foundElement.category || "";
+      elEditForm.speed.value = foundElement.speed || "";
+
+      elEditedElementTitle.innerText = foundElement.name;
+    });
   }
 
   // 🗑️ Delete
   if (target.classList.contains("js-delete")) {
     if (!checkAuth()) {
-      customAlert("Kirish talab qilinadi", "Ro'yxatdan o'tishingiz kerak!");
-      window.location.href = "/pages/login.html";
+      customConfirm("Kirish talab qilinadi! Ro'yxatdan o'tasizmi?", () => {
+        window.location.href = "/pages/login.html";
+      });
       return;
     }
 
