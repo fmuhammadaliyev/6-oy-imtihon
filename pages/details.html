@@ -5,6 +5,283 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Details</title>
     <link rel="stylesheet" href="../css/output.css" />
+    <link rel="stylesheet" href="../css/style.css" />
   </head>
-  <body></body>
+  <body>
+    <!-- Toast -->
+    <div id="toast" class="toast">
+      <ul id="toastContainer" class="toast-container"></ul>
+    </div>
+
+    <!-- Skeleton loading -->
+    <div id="skeleton" class="container">
+      <div>
+        <a href="../index.html">Bosh sahifa</a>
+        <span class="dID">
+          <div class="skeleton h-6 w-2/3"></div>
+        </span>
+        <button class="btn btn-active btn-primary">Primary</button>
+      </div>
+
+      <div>
+        <div class="skeleton h-10 w-6 mb-2"></div>
+        <div class="skeleton h-7 w-2/3 mb-1">trim</div>
+        <div class="skeleton h-7 w-2/3 mb-1">generation</div>
+        <div class="skeleton h-7 w-2/3 mb-1">year</div>
+        <div class="skeleton h-7 w-2/3 mb-1">color</div>
+        <div class="skeleton h-7 w-2/3 mb-1">color name</div>
+        <div class="skeleton h-7 w-2/3 mb-1">category</div>
+        <div class="skeleton h-7 w-2/3 mb-1">door count</div>
+        <div class="skeleton h-7 w-2/3 mb-1">seat count</div>
+        <div class="skeleton h-7 w-2/3 mb-1">max speed</div>
+        <div class="skeleton h-7 w-2/3 mb-1">acceleration</div>
+        <div class="skeleton h-7 w-2/3 mb-1">engine</div>
+        <div class="skeleton h-7 w-2/3 mb-1">horsepower</div>
+
+        <div>
+          Fuel Type:
+          <div class="skeleton h-7 w-2/3"></div>
+        </div>
+
+        <div>
+          Fuel Consumption:
+          <div class="fuelBlock">
+            <div>
+              City:
+              <div class="skeleton h-7 w-2/3"></div>
+            </div>
+            <div>
+              Highway:
+              <div class="skeleton h-7 w-2/3"></div>
+            </div>
+            <div>
+              Combined:
+              <div class="skeleton h-7 w-2/3"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skeleton h-7 w-2/3 mb-1">country</div>
+        <div class="skeleton h-7 w-2/3 mb-1">description</div>
+      </div>
+    </div>
+
+    <!-- Actual details container -->
+    <div id="asldet" class="container hidden">
+      <div>
+        <a href="../index.html">Bosh sahifa</a>
+        <span class="dID"
+          >ID:
+          <p id="id"></p
+        ></span>
+        <button id="editButton" class="btn btn-active btn-primary">
+          <!-- SVG icon omitted for brevity -->
+          Edit
+        </button>
+      </div>
+
+      <div>
+        <span><h1 id="name"></h1></span>
+        <span
+          >trim:
+          <p id="trim"></p
+        ></span>
+        <span
+          >generation:
+          <p id="generation"></p
+        ></span>
+        <span
+          >year:
+          <p id="year"></p
+        ></span>
+        <span
+          >color:
+          <p id="color"></p
+        ></span>
+        <span
+          >color name:
+          <p id="colorName"></p
+        ></span>
+        <span
+          >category:
+          <p id="category"></p
+        ></span>
+        <span
+          >door count:
+          <p id="doorCount"></p
+        ></span>
+        <span
+          >seat count:
+          <p id="seatCount"></p
+        ></span>
+        <span
+          >max speed:
+          <p id="maxSpeed"></p
+        ></span>
+        <span
+          >acceleration:
+          <p id="acceleration"></p
+        ></span>
+        <span
+          >engine:
+          <p id="engine"></p
+        ></span>
+        <span
+          >horsepower:
+          <p id="horsepower"></p
+        ></span>
+        <span
+          >fuel type:
+          <p id="fuelType"></p
+        ></span>
+
+        <div>
+          Fuel Consumption:
+          <div class="fuelBlock">
+            <p>City: <span id="city"></span></p>
+            <p>Highway: <span id="highway"></span></p>
+            <p>Combined: <span id="combined"></span></p>
+          </div>
+        </div>
+
+        <span
+          >country:
+          <p id="country"></p
+        ></span>
+        <span
+          >description:
+          <p id="description"></p
+        ></span>
+      </div>
+    </div>
+
+    <!-- Edit modal -->
+    <dialog id="editModal" class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold" id="editedElementTitle">Edit Car</h3>
+        <form id="editForm" method="dialog">
+          <input
+            type="text"
+            name="name"
+            placeholder="Mashina nomi"
+            class="input"
+          />
+          <input
+            type="text"
+            name="trim"
+            placeholder="Mashina qanday jihozlangan?"
+            class="input"
+          />
+          <input
+            type="text"
+            name="generation"
+            placeholder="Generation"
+            class="input"
+          />
+          <input
+            type="number"
+            name="year"
+            placeholder="Mashina yili"
+            class="input"
+          />
+          <input
+            type="text"
+            name="color"
+            placeholder="Mashina rang kodi"
+            class="input"
+          />
+          <input
+            type="text"
+            name="colorName"
+            placeholder="Rangining nomi"
+            class="input"
+          />
+          <input
+            type="text"
+            name="category"
+            placeholder="Mashina kategoriyasi"
+            class="input"
+          />
+          <input
+            type="number"
+            name="doorCount"
+            placeholder="Eshiklar soni"
+            class="input"
+          />
+          <input
+            type="number"
+            name="seatCount"
+            placeholder="O'rindiqlar soni"
+            class="input"
+          />
+          <input
+            type="text"
+            name="maxSpeed"
+            placeholder="Eng yuqori tezligi"
+            class="input"
+          />
+          <input
+            type="text"
+            name="acceleration"
+            placeholder="Tezlanish 0/100km/h"
+            class="input"
+          />
+          <input
+            type="text"
+            name="engine"
+            placeholder="Dvigatel"
+            class="input"
+          />
+          <input
+            type="number"
+            name="horsepower"
+            placeholder="Ot kuchi"
+            class="input"
+          />
+          <input
+            type="text"
+            name="fuelType"
+            placeholder="Yoqilg'i turi"
+            class="input"
+          />
+          <span>Yoqilg'i sarfi:</span>
+          <input
+            type="text"
+            name="city"
+            placeholder="Shahar ichida"
+            class="input"
+          />
+          <input
+            type="text"
+            name="highway"
+            placeholder="Avtomagistralda"
+            class="input"
+          />
+          <input
+            type="text"
+            name="combined"
+            placeholder="Aralash"
+            class="input"
+          />
+          <input
+            type="text"
+            name="country"
+            placeholder="Davlati"
+            class="input"
+          />
+          <textarea
+            class="textarea"
+            name="description"
+            placeholder="Qisqacha izoh"
+          ></textarea>
+          <button class="btn btn-active" type="submit">Tasdiqlash</button>
+        </form>
+        <div class="modal-action">
+          <button id="closeEditModal" class="btn">Yopish</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script type="module" src="../js/pages/details.js"></script>
+  </body>
 </html>

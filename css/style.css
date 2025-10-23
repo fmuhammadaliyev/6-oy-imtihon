@@ -73,3 +73,6 @@ html[data-theme="light"] .modal p {
 html[data-theme="dark"] .modal p {
   color: #ffffff;
 }
+.nma {
+  color: white !important;
+}

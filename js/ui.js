@@ -86,3 +86,32 @@ export function ui(data) {
     elContainer.appendChild(card);
   });
 }
+
+// export function pagination(total, limit, skip) {
+//   const elPagination = document.getElementById("pagination");
+//   elPagination.innerHTML = "";
+//   const remained = total % limit;
+//   const pageCount = (total - remained) / limit;
+//   let activePage = skip / limit + 1;
+
+//   for (let i = 1; i <= pageCount; i++) {
+//     const button = document.createElement("button");
+//     button.classList.add("join-item", "btn", "js-page");
+//     if (activePage === i) {
+//       button.classList.add("btn-active");
+//     }
+
+//     button.innerText = i;
+//     button.dataset.limit = limit;
+//     elPagination.appendChild(button);
+
+//     button.dataset.skip = limit * i - limit;
+//   }
+
+//   if (remained > 0) {
+//     const button = document.createElement("button");
+//     button.classList.add("join-item", "btn", "js-page");
+//     button.innerText = pageCount + 1;
+//     elPagination.appendChild(button);
+//   }
+// }

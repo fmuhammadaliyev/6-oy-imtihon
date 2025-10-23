@@ -2,6 +2,7 @@ import { checkAuth } from "./check-auth.js";
 import { deleteElementLocal, editElementLocal } from "./crud.js";
 import { changeLocalData, localData } from "./local-data.js";
 import { deleteElement, editedElement, getAll } from "./request.js";
+import { getById } from "./request.js";
 import { ui } from "./ui.js";
 
 /* 🌐 DOM elementlarini chaqirib olamiz */
@@ -14,7 +15,6 @@ const elContainer = document.getElementById("carContainer");
 const elEditForm = document.getElementById("editForm");
 const elEditModal = document.getElementById("editModal");
 const elEditedElementTitle = document.getElementById("editedElementTitle");
-const elPagination = document.getElementById("pagination");
 
 /* 🔔 Dialog modallar */
 const elNoDataModal = document.getElementById("noDataModal");
@@ -257,6 +257,74 @@ elEditForm.addEventListener("submit", (evt) => {
       });
   }
 });
+
+const infoModal = document.getElementById("infoModal");
+const modalCarName = document.getElementById("modalCarName");
+const modalCarDetails = document.getElementById("modalCarDetails");
+const closeInfoModal = document.getElementById("closeInfoModal");
+
+// Info tugmasi bosilganda
+document.addEventListener("click", async (evt) => {
+  const btn = evt.target.closest(".js-info");
+  if (!btn) return;
+
+  const carId = btn.id;
+  modalCarName.innerText = "Yuklanmoqda...";
+  modalCarDetails.innerText = "";
+  infoModal.showModal();
+
+  try {
+    const car = await getById(carId);
+
+    // Modalga ma’lumot chiqarish
+    modalCarName.innerText = car.name;
+    modalCarDetails.innerHTML = `
+      Trim: ${car.trim} <br>
+      Generation: ${car.generation} <br>
+      Year: ${car.year} <br>
+      Color: ${car.color} (${car.colorName}) <br>
+      Category: ${car.category} <br>
+      Door count: ${car.doorCount} <br>
+      Seat count: ${car.seatCount} <br>
+      Max speed: ${car.maxSpeed} km/h <br>
+      Acceleration: ${car.acceleration} s <br>
+      Engine: ${car.engine} <br>
+      Horsepower: ${car.horsepower} hp <br>
+      Fuel type: ${car.fuelType} <br>
+      Fuel Consumption (City/Highway/Combined): ${car.city}/${car.highway}/${car.combined} <br>
+      Country: ${car.country} <br>
+      Description: ${car.description}
+    `;
+  } catch (error) {
+    modalCarName.innerText = "Xatolik yuz berdi!";
+    modalCarDetails.innerText = error.message;
+  }
+});
+
+// Modalni yopish
+closeInfoModal.addEventListener("click", () => infoModal.close());
+
+// Modalni yopish
+closeInfoModal.addEventListener("click", () => infoModal.close());
+
+// const elPagination = document.getElementById("pagination");
+
+// elPagination.addEventListener("click", (evt) => {
+//   if (evt.target.classList.contains("js-page")) {
+//     skip = evt.target.dataset.skip;
+//     getAll(`?limit=${limit}&skip=${skip}`)
+//       .then((res) => {
+//         pagination(res.total, res.limit, res.skip);
+//       })
+//       .catch((error) => {
+//         customAlert("Xatolik", error.message);
+//       })
+//       .finally(() => {
+//         elLoader.classList.add("hidden");
+//         elLoader.classList.remove("grid");
+//       });
+//   }
+// });
 
 // dark mod
 const elBtn = document.getElementById("btn");
