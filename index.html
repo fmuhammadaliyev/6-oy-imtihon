@@ -80,53 +80,73 @@
     <!-- Filter section -->
     <section class="container relative mt-[100px]">
       <div class="px-5">
-        <div class="flex items-center gap-5 pb-5 justify-between">
-          <select class="select select-primary" id="filterTypeSelect">
-            <option disabled selected>
-              Nima bo'yicha filter qilmoqchisiz?
-            </option>
-            <option value="year">Yil</option>
-            <option value="colorName">Rang</option>
-            <option value="country">Davlat</option>
-            <option value="maxSpeed">Tezlik</option>
-            <option value="category">Turkum</option>
-          </select>
-
-          <select class="hidden select select-primary" id="filterValueSelect">
-            <option disabled selected>Hammasi</option>
-          </select>
-
-          <label class="input">
-            <svg
-              class="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
+        <!-- 🔹 Filter qismi -->
+        <div
+          class="flex flex-wrap items-center gap-5 pb-5 justify-between max-[768px]:flex-col max-[768px]:items-stretch"
+        >
+          <!-- 1-qatordagi barcha elementlar -->
+          <div
+            class="flex flex-row flex-wrap gap-4 w-full justify-between max-[1024px]:justify-start max-[768px]:flex-col"
+          >
+            <!-- Filter turi -->
+            <select
+              class="select select-primary w-[200px] max-[1024px]:w-[180px] max-[768px]:w-full"
+              id="filterTypeSelect"
             >
-              <g
-                stroke-linejoin="round"
-                stroke-linecap="round"
-                stroke-width="2.5"
-                fill="none"
-                stroke="currentColor"
+              <option disabled selected>
+                Nima bo'yicha filter qilmoqchisiz?
+              </option>
+              <option value="year">Yil</option>
+              <option value="colorName">Rang</option>
+              <option value="country">Davlat</option>
+              <option value="maxSpeed">Tezlik</option>
+              <option value="category">Turkum</option>
+            </select>
+
+            <!-- Filter qiymati -->
+            <select
+              class="hidden select select-primary w-[200px] max-[1024px]:w-[180px] max-[768px]:w-full"
+              id="filterValueSelect"
+            >
+              <option disabled selected>Hammasi</option>
+            </select>
+
+            <!-- Qidiruv input -->
+            <label
+              class="input flex items-center gap-2 w-[300px] max-[1024px]:w-[250px] max-[768px]:w-full"
+            >
+              <svg
+                class="h-[1em] opacity-50"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
               >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
-            <input
-              type="search"
-              class="grow"
-              placeholder="Search"
-              id="searchInput"
-            />
-            <kbd class="kbd kbd-sm">⌘</kbd>
-            <kbd class="kbd kbd-sm">K</kbd>
-          </label>
+                <g
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  stroke-width="2.5"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="m21 21-4.3-4.3"></path>
+                </g>
+              </svg>
+              <input
+                type="search"
+                class="grow"
+                placeholder="Search"
+                id="searchInput"
+              />
+              <kbd class="kbd kbd-sm">⌘</kbd>
+              <kbd class="kbd kbd-sm">K</kbd>
+            </label>
+          </div>
         </div>
 
+        <!-- 🔹 Mashinalar ro‘yxati -->
         <div
           id="carContainer"
-          class="grid grid-cols-4 gap-5 max-[1024px]:grid-cols-3 max-[768px]:grid-cols-2 max-[480px]:grid-cols-1"
+          class="grid grid-cols-4 gap-5 max-[1280px]:grid-cols-3 max-[1024px]:grid-cols-2 max-[640px]:grid-cols-1"
         ></div>
       </div>
     </section>
@@ -336,6 +356,7 @@
         </div>
       </div>
     </dialog>
+
     <!-- ✏️ Edit Modal -->
     <dialog id="editModal" class="modal">
       <div class="modal-box max-w-xl">
@@ -437,7 +458,12 @@
         </form>
       </div>
     </dialog>
-
+    <div class="join flex justify-center" id="pagination">
+      <button class="join-item btn">1</button>
+      <button class="join-item btn btn-active">2</button>
+      <button class="join-item btn">3</button>
+      <button class="join-item btn">4</button>
+    </div>
     <script type="module" src="./js/app.js"></script>
   </body>
 </html>

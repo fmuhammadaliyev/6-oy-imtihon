@@ -3,17 +3,21 @@ const alertBox = document.getElementById("alert");
 
 async function register(user) {
   try {
-    const req = await fetch("https://json-api.uz/api/project/fn44/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
+    const req = await fetch(
+      "https://json-api.uz/api/project/fn44/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      }
+    );
 
     const res = await req.json();
 
-    if (!req.ok) throw new Error(res.message || "Ro'yxatdan o'tishda xatolik yuz berdi");
+    if (!req.ok)
+      throw new Error(res.message || "Ro'yxatdan o'tishda xatolik yuz berdi");
 
     return res;
   } catch (err) {
@@ -47,7 +51,7 @@ elForm.addEventListener("submit", async (evt) => {
     }
 
     showAlert("success", "Muvaffaqiyatli ro'yxatdan o'tdingiz!");
-    setTimeout(() => (window.location.href = "../../index.html"), 1000);
+    setTimeout(() => (window.location.href = "./login.html"), 1000);
   } catch (err) {
     showAlert("error", err.message || "Xatolik yuz berdi!");
   }
