@@ -59,3 +59,17 @@
   margin-left: 130px;
   margin-top: -20px;
 }
+html[data-theme="light"] .modal h3 {
+  color: #000000;
+}
+
+html[data-theme="dark"] .modal h3 {
+  color: #ffffff;
+}
+html[data-theme="light"] .modal p {
+  color: #000000;
+}
+
+html[data-theme="dark"] .modal p {
+  color: #ffffff;
+}
