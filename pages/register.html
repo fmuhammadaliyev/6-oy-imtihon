@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ro'yxatdan o'tish</title>
     <link rel="stylesheet" href="../css/output.css" />
   </head>
-  <body></body>
+  <body
+    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-indigo-50 p-6 text-black"
+  >
+    <div
+      class="w-full max-w-md bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-8"
+    >
+      <h2 class="text-3xl font-bold text-center text-sky-700 mb-6">
+        Ro'yxatdan o'tish
+      </h2>
+
+      <!-- alert -->
+      <div id="alert" class="hidden mb-4 p-3 rounded-lg text-sm"></div>
+
+      <form id="form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Ism</label>
+          <input
+            type="text"
+            name="name"
+            required
+            placeholder="To'liq ismingiz"
+            class="mt-1 w-full rounded-lg border border-slate-200 px-4 py-2 focus:ring-2 focus:ring-sky-300 outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Email</label>
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+            class="mt-1 w-full rounded-lg border border-slate-200 px-4 py-2 focus:ring-2 focus:ring-sky-300 outline-none"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Parol</label>
+          <input
+            type="password"
+            name="password"
+            minlength="6"
+            required
+            placeholder="Kamida 6 belgidan iborat"
+            class="mt-1 w-full rounded-lg border border-slate-200 px-4 py-2 focus:ring-2 focus:ring-sky-300 outline-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-2 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition"
+        >
+          Ro'yxatdan o'tish
+        </button>
+      </form>
+
+      <p class="text-sm text-center">
+        Parolimni Unutdim 😢
+        <a href="../index.html" class="text-sky-600 hover:underline">Kirish</a>
+      </p>
+    </div>
+
+    <script type="module" src="../js/pages/register.js"></script>
+  </body>
 </html>

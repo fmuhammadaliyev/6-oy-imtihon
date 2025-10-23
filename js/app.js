@@ -4,6 +4,7 @@ import { changeLocalData, localData } from "./local-data.js";
 import { deleteElement, editedElement, getAll } from "./request.js";
 import { ui } from "./ui.js";
 
+/* 🌐 DOM elementlarini chaqirib olamiz */
 const elOfflinePage = document.getElementById("networkError");
 const elFilterTypeSelect = document.getElementById("filterTypeSelect");
 const elFilterValueSelect = document.getElementById("filterValueSelect");
@@ -14,31 +15,50 @@ const elEditForm = document.getElementById("editForm");
 const elEditModal = document.getElementById("editModal");
 const elEditedElementTitle = document.getElementById("editedElementTitle");
 
+/* 🔔 Dialog modallar */
+const elNoDataModal = document.getElementById("noDataModal");
+const elConfirmModal = document.getElementById("confirmModal");
+const elConfirmMessage = document.getElementById("confirmMessage");
+const elConfirmYes = document.getElementById("confirmYes");
+
+const elAlertModal = document.getElementById("alertModal");
+const elAlertTitle = document.getElementById("alertTitle");
+const elAlertText = document.getElementById("alertText");
+const elAlertClose = document.getElementById("alertClose");
+
 let backendData = null;
-let uiData = null;
 let worker = new Worker("./worker.js");
 let filterKey = null;
 let filterValue = null;
 let editedElementId = null;
 
-/* 🧠 Custom Confirm Modal funksiyasi */
+/* ⚡ Oddiy alert() o‘rniga ishlaydigan modal funksiyasi */
+function customAlert(title, message) {
+  elAlertTitle.textContent = title || "Xabar";
+  elAlertText.textContent = message;
+  elAlertModal.showModal();
+  elAlertClose.onclick = () => elAlertModal.close();
+}
+
+/* 🧠 Confirm dialog (tasdiqlash) */
 function customConfirm(message, onYes) {
-  const modalToggle = document.getElementById("confirmModal");
-  const yesBtn = document.getElementById("confirmYes");
-  const messageEl = document.getElementById("confirmMessage");
+  elConfirmMessage.textContent = message;
+  elConfirmModal.showModal();
 
-  messageEl.textContent = message;
-  modalToggle.checked = true;
-
-  yesBtn.onclick = () => {
-    modalToggle.checked = false;
+  elConfirmYes.onclick = () => {
+    elConfirmModal.close();
     onYes();
   };
 }
 
-/* 🌐 Internet holatini tekshirish */
+/* ⚠️ No data modal */
+function showNoDataModal() {
+  elNoDataModal.showModal();
+}
+
+/* 🌐 Internet holatini tekshirish va ma’lumotlarni olish */
 window.addEventListener("DOMContentLoaded", () => {
-  if (window.navigator.onLine === false) {
+  if (!navigator.onLine) {
     elOfflinePage.classList.remove("hidden");
     elOfflinePage.classList.add("flex");
   } else {
@@ -52,11 +72,10 @@ window.addEventListener("DOMContentLoaded", () => {
   getAll()
     .then((res) => {
       backendData = res;
-      uiData = backendData.data;
-      changeLocalData(uiData);
+      changeLocalData(backendData.data);
     })
     .catch((error) => {
-      alert(error.message);
+      customAlert("Xatolik", error.message);
     })
     .finally(() => {
       elLoader.classList.add("hidden");
@@ -66,32 +85,25 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /* 🔍 Filter turi tanlanganda */
 elFilterTypeSelect.addEventListener("change", (evt) => {
-  const value = evt.target[evt.target.selectedIndex].value;
-  filterKey = value;
+  filterKey = evt.target.value;
   worker.postMessage({
     functionName: "filterByType",
-    params: [backendData.data, value],
+    params: [backendData.data, filterKey],
   });
 });
 
-/* 🧩 Filter qiymati tanlanganda */
+/* 🔍 Filter qiymati tanlanganda */
 elFilterValueSelect.addEventListener("change", (evt) => {
-  const value = evt.target[evt.target.selectedIndex].value;
-  filterValue = value;
-
-  const elContainer = document.getElementById("carContainer");
+  filterValue = evt.target.value;
   elContainer.innerHTML = "";
 
   if (filterKey && filterValue) {
     elLoader.classList.remove("hidden");
     elLoader.classList.add("grid");
+
     getAll(`?${filterKey}=${filterValue}`)
-      .then((res) => {
-        ui(res.data);
-      })
-      .catch((error) => {
-        alert(error.message);
-      })
+      .then((res) => ui(res.data))
+      .catch((error) => customAlert("Xatolik", error.message))
       .finally(() => {
         elLoader.classList.add("hidden");
         elLoader.classList.remove("grid");
@@ -101,8 +113,7 @@ elFilterValueSelect.addEventListener("change", (evt) => {
 
 /* 🔎 Qidiruv */
 elSearchInput.addEventListener("input", (evt) => {
-  const key = evt.target.value;
-
+  const key = evt.target.value.trim();
   worker.postMessage({
     functionName: "search",
     params: [backendData.data, key],
@@ -125,24 +136,22 @@ worker.addEventListener("message", (evt) => {
     elFilterValueSelect.appendChild(option);
 
     result.forEach((element) => {
-      const option = document.createElement("option");
-      option.textContent = element;
-      option.value = element;
-      elFilterValueSelect.appendChild(option);
+      const opt = document.createElement("option");
+      opt.textContent = element;
+      opt.value = element;
+      elFilterValueSelect.appendChild(opt);
     });
   } else if (response.target === "search") {
-    const elContainer = document.getElementById("carContainer");
-    elContainer.innerHTML = null;
-    if (response.result.length > 0) {
-      ui(response.result);
+    elContainer.innerHTML = "";
+    if (result.length > 0) {
+      ui(result);
     } else {
-      elContainer.innerHTML = "";
-      document.getElementById("noDataModal").checked = true;
+      showNoDataModal();
     }
   }
 });
 
-/* 🌐 Internet status */
+/* 🌐 Internet status kuzatuvchi */
 window.addEventListener("online", () => {
   elOfflinePage.classList.add("hidden");
   elOfflinePage.classList.remove("flex");
@@ -153,12 +162,9 @@ window.addEventListener("offline", () => {
   elOfflinePage.classList.add("flex");
 });
 
-elContainer.addEventListener("click", (evt) => {
+/* 🧩 Elementlar bilan ishlash (edit va delete) */
+elContainer.addEventListener("click", async (evt) => {
   const target = evt.target;
-
-  // 🔎 Info
-  if (target.classList.contains("js-info")) {
-  }
 
   // ✏️ Edit
   if (target.classList.contains("js-edit")) {
@@ -171,39 +177,54 @@ elContainer.addEventListener("click", (evt) => {
           (element) => element.id == target.id
         );
 
-        elEditForm.name.value = foundElement.name;
+        if (!foundElement) {
+          customAlert("Xatolik", "Ma'lumot topilmadi!");
+          return;
+        }
+
+        // 🔄 Barcha inputlarni to‘ldirish
+        elEditForm.name.value = foundElement.name || "";
+        elEditForm.description.value = foundElement.description || "";
+        elEditForm.color.value = foundElement.color || "";
+        elEditForm.year.value = foundElement.year || "";
+        elEditForm.country.value = foundElement.country || "";
+        elEditForm.category.value = foundElement.category || "";
+        elEditForm.speed.value = foundElement.speed || "";
+
         elEditedElementTitle.innerText = foundElement.name;
-        elEditForm.description.value = foundElement.description;
       });
     } else {
-      alert("Ro'yhatdan o'tishingiz kerak!");
+      customAlert("Kirish talab qilinadi", "Ro'yxatdan o'tishingiz kerak!");
       window.location.href = "/pages/login.html";
     }
   }
 
   // 🗑️ Delete
   if (target.classList.contains("js-delete")) {
-    if (checkAuth()) {
-      customConfirm("Rostdan o‘chirmoqchimisiz?", () => {
-        target.innerHTML = "O‘chirilmoqda...";
-        deleteElement(target.id)
-          .then((id) => {
-            deleteElementLocal(id);
-          })
-          .catch(() => {})
-          .finally(() => {});
-      });
-    } else {
-      alert("Ro'yhatdan o'tishingiz kerak!");
+    if (!checkAuth()) {
+      customAlert("Kirish talab qilinadi", "Ro'yxatdan o'tishingiz kerak!");
       window.location.href = "/pages/login.html";
+      return;
     }
+
+    customConfirm("Rostdan o‘chirmoqchimisiz?", () => {
+      target.innerHTML = "O‘chirilmoqda...";
+      deleteElement(target.id)
+        .then((id) => {
+          deleteElementLocal(id);
+          customAlert("✅ O‘chirildi", "Element muvaffaqiyatli o‘chirildi.");
+        })
+        .catch((err) => {
+          console.error("O‘chirishda xato:", err);
+          customAlert("❌ Xatolik", "Elementni o‘chirishda muammo yuz berdi.");
+        });
+    });
   }
 });
 
 /* ✏️ Edit form yuborilganda */
 elEditForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
-
   elEditedElementTitle.innerText = "Tahrirlanmoqda...";
 
   const formData = new FormData(elEditForm);
@@ -215,14 +236,21 @@ elEditForm.addEventListener("submit", (evt) => {
 
   if (editedElementId) {
     result.id = editedElementId;
+
     editedElement(result)
       .then((res) => {
         editElementLocal(res);
+        elEditedElementTitle.innerText = "✅ Tahrirlandi!";
+        customAlert("✅ Muvaffaqiyatli", "Ma'lumot tahrirlandi!");
       })
-      .catch(() => {})
+      .catch((err) => {
+        console.error("Tahrirlashda xato:", err);
+        elEditedElementTitle.innerText = "❌ Xatolik yuz berdi!";
+        customAlert("❌ Xatolik", "Tahrirlashda muammo yuz berdi!");
+      })
       .finally(() => {
         editedElementId = null;
-        elEditModal.close();
+        setTimeout(() => elEditModal.close(), 600);
       });
   }
 });
