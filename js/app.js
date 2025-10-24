@@ -164,16 +164,39 @@ window.addEventListener("offline", () => {
   elOfflinePage.classList.add("flex");
 });
 
-/* 🧩 Elementlar bilan ishlash (edit va delete) */
+const chanel = new BroadcastChannel("chanel");
+
+chanel.onmessage = (evt) => {
+  const { type, data } = evt.data;
+
+  switch (type) {
+    case "delete":
+      deleteElementLocal(data.id);
+      customAlert("❌ Element o‘chirildi", `${data.name} o‘chirildi.`);
+      break;
+    case "edit":
+      editElementLocal(data);
+      customAlert("✏️ Element tahrirlandi", `${data.name} yangilandi.`);
+      break;
+    case "register":
+      customAlert(
+        "✅ Ro‘yxatdan o‘tildi",
+        "Endi ma'lumotlarni tahrirlash mumkin!"
+      );
+      break;
+  }
+};
+
 elContainer.addEventListener("click", async (evt) => {
   const target = evt.target;
 
   // ✏️ Edit
   if (target.classList.contains("js-edit")) {
     if (!checkAuth()) {
-      customConfirm("Kirish talab qilinadi! Ro'yxatdan o'tasizmi?", () => {
-        window.location.href = "/pages/register.html";
-      });
+      customConfirm(
+        "Kirish talab qilinadi! Ro'yxatdan o'tasizmi?",
+        goToRegister
+      );
       return;
     }
 
@@ -181,8 +204,7 @@ elContainer.addEventListener("click", async (evt) => {
       editedElementId = target.id;
       elEditModal.showModal();
 
-      const foundElement = localData.find((element) => element.id == target.id);
-
+      const foundElement = localData.find((el) => el.id == target.id);
       if (!foundElement) {
         customAlert("Xatolik", "Ma'lumot topilmadi!");
         return;
@@ -204,9 +226,10 @@ elContainer.addEventListener("click", async (evt) => {
   // 🗑️ Delete
   if (target.classList.contains("js-delete")) {
     if (!checkAuth()) {
-      customConfirm("Kirish talab qilinadi! Ro'yxatdan o'tasizmi?", () => {
-        window.location.href = "/pages/register.html";
-      });
+      customConfirm(
+        "Kirish talab qilinadi! Ro'yxatdan o'tasizmi?",
+        goToRegister
+      );
       return;
     }
 
@@ -214,7 +237,9 @@ elContainer.addEventListener("click", async (evt) => {
       target.innerHTML = "O‘chirilmoqda...";
       deleteElement(target.id)
         .then((id) => {
+          const deletedElement = localData.find((el) => el.id == id);
           deleteElementLocal(id);
+          chanel.postMessage({ type: "delete", data: deletedElement }); // 🔄 Sinxron
           customAlert("✅ O‘chirildi", "Element muvaffaqiyatli o‘chirildi.");
         })
         .catch((err) => {
@@ -225,7 +250,7 @@ elContainer.addEventListener("click", async (evt) => {
   }
 });
 
-/* ✏️ Edit form yuborilganda */
+// 📝 Edit form submit
 elEditForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   elEditedElementTitle.innerText = "Tahrirlanmoqda...";
@@ -243,6 +268,7 @@ elEditForm.addEventListener("submit", (evt) => {
     editedElement(result)
       .then((res) => {
         editElementLocal(res);
+        chanel.postMessage({ type: "edit", data: res }); // 🔄 Sinxron
         elEditedElementTitle.innerText = "✅ Tahrirlandi!";
         customAlert("✅ Muvaffaqiyatli", "Ma'lumot tahrirlandi!");
       })
@@ -257,6 +283,12 @@ elEditForm.addEventListener("submit", (evt) => {
       });
   }
 });
+
+// 🔑 Ro‘yxatdan o‘tish funksiyasi
+function goToRegister() {
+  chanel.postMessage({ type: "register" }); // 🔄 Sinxron xabar
+  window.location.href = "/pages/register.html";
+}
 
 const infoModal = document.getElementById("infoModal");
 const modalCarName = document.getElementById("modalCarName");
